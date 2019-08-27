@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nuc.wssp.dao.IGroupheaderDao">
+
+    <!-- gid 判断是否是组长 -->
+	<select id="queryGroupheaderGid" resultType="nuc.wssp.beans.Groupheader">
+		select * from groupheader where gid= #{gid}
+	</select>
+	
+    <!-- anumber 找组长组员 -->
+	<select id="queryWorktableListAnumber" resultType="nuc.wssp.beans.Worktable">
+		select * from worktable where anumber= #{anumber}
+	</select>
+	
+    <!-- sid 找组员日常表现 -->
+	<select id="queryBehaviorSid" resultType="nuc.wssp.beans.Behavior">
+		select * from behavior where sid= #{sid}
+	</select>
+	
+	<!-- 插入组员日常 -->
+	<insert id="insertBehavior" parameterType="nuc.wssp.beans.Behavior">
+		insert into behavior(sid, content, count, gid, time) values(#{sid}, #{content}, #{count}, #{gid}, #{time}) 
+	</insert>
+	
+	<!-- 对组员表现评等级 -->
+	<update id="insertBehaviorGrade" parameterType="nuc.wssp.beans.Behavior">
+		update behavior set grade=#{grade} where sid=#{sid} and count=#{count}
+	</update>
+	
+	<!-- 发放工资 -->
+	<insert id="insertSalary" parameterType="nuc.wssp.beans.Salary">
+		insert into salary(sid, reward, gid, time) values(#{sid}, #{reward}, #{gid}, #{time}) 
+	</insert>
+	
+	<!-- sid 找组员工资详情 -->
+	<select id="querySalarySid" resultType="nuc.wssp.beans.Salary">
+		select * from salary where sid= #{sid}
+	</select>
+	
+	<!-- gid 找组员工资详情 -->
+	<select id="querySalaryGid" resultType="nuc.wssp.beans.Salary">
+		select * from salary where gid= #{gid}
+	</select>
+	
+	<!-- sid count 找组员工资详情 -->
+	<select id="queryBehaviorSidCount" resultType="nuc.wssp.beans.Behavior">
+		select * from behavior where sid=#{0} and count=#{1}
+	</select>
+
+	<!-- 对组员工资修改 -->
+	<update id="updateSalarySid" parameterType="nuc.wssp.beans.Salary">
+		update salary set reward=#{reward} where sid=#{sid}
+	</update>
+	
+	<!-- 心得总结 -->
+	<insert id="insertExperience" parameterType="nuc.wssp.beans.Experience">
+		insert into experience(sid,experience,time) values(#{sid}, #{experience}, #{time}) 
+	</insert>
+	
+	<!-- sid 找心得 -->
+	<select id="queryExperienceSid" resultType="nuc.wssp.beans.Experience">
+		select * from experience where sid=#{sid}
+	</select>
+	
+	<!--sid 心得修改 -->
+	<update id="updateExperienceSid" parameterType="nuc.wssp.beans.Experience">
+		update experience set experience=#{experience},time=#{time} where sid=#{sid}
+	</update>	
+	
+</mapper>

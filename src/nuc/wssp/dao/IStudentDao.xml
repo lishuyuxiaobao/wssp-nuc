@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nuc.wssp.dao.IStudentDao">
+
+    <!-- sid 找学生信息 -->
+	<select id="verifyStudent" resultType="nuc.wssp.beans.Student">
+		select * from student where sid= #{sid}
+	</select>
+	
+	<!-- mark 找代号信息 -->
+	<select id="queryMark" resultType="nuc.wssp.beans.Mark">
+		select * from mark where mark= #{mark}
+	</select>
+	
+	<!-- sdenpartment 找院系编号 -->
+	<select id="queryMarkSdepartment" resultType="nuc.wssp.beans.Mark">
+		select * from mark where position= #{sdepartment}
+	</select>
+	
+	<!-- number 找院系名称  -->
+	<select id="queryMarkNumber" resultType="nuc.wssp.beans.Mark">
+		select * from mark where number= #{number}
+	</select>
+	
+	<!-- sid 找报岗信息 -->
+	<select id="queryWorktableSid" resultType="nuc.wssp.beans.Worktable">
+		select * from worktable where sid= #{sid}
+	</select>
+	
+	<!-- bnumber 找报该类岗人数 -->
+	<select id="queryWorktableBnumber" resultType="nuc.wssp.beans.Worktable">
+		select * from worktable where bnumber= #{bnumber}
+	</select>
+	
+	<!-- ynumber 找限制人数 -->
+	<select id="queryDlimitYnumber" resultType="nuc.wssp.beans.Dlimit">
+		select * from dlimit where ynumber= #{ynumber}
+	</select>
+	
+	<!-- sid 找修改信息 -->
+	<update id="updateStudentInfo" parameterType="nuc.wssp.beans.Student">
+		update student set bank=#{bank}, phone=#{phone} where sid=#{sid}     
+	</update>
+	
+	<!-- anumber 找组长信息 -->
+	<select id="queryGroupheaderAnumber" resultType="nuc.wssp.beans.Groupheader">
+		select * from groupheader where anumber= #{anumber}
+	</select>
+	
+	<!-- dnumber和bnumber 找关联信息 -->
+	<select id="queryRelationDBnumber" resultType="nuc.wssp.beans.Relation">
+		select * from relation where dnumber= #{0} and bnumber= #{1}
+	</select>
+	
+	<insert id="insertWorktable" parameterType="nuc.wssp.beans.Worktable">
+		insert into worktable(sid,bnumber,anumber) values(#{sid}, #{bnumber}, #{anumber})
+	</insert>
+
+</mapper>

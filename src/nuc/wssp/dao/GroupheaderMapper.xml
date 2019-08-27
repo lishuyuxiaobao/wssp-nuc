@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nuc.wssp.dao.GroupheaderMapper" >
+  <resultMap id="BaseResultMap" type="nuc.wssp.beans.Groupheader" >
+    <id column="gid" property="gid" jdbcType="BIGINT" />
+    <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="anumber" property="anumber" jdbcType="BIGINT" />
+    <result column="count" property="count" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    gid, area, anumber, count
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="nuc.wssp.beans.GroupheaderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from groupheader
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from groupheader
+    where gid = #{gid,jdbcType=BIGINT}
+  </select>
+  
+  <resultMap type="Groupheader" id="groupheader">
+  	<id column="ggid" property="gid"/>
+  	<result column="garea" property="area"/>
+  	<result column="ganumber" property="anumber"/>
+  	<result column="gcount" property="count"/>
+  	<!-- 一对多 -->
+  	<collection property="list" ofType="Student">
+  		<id column="ssid" property="sid"/>
+  		<result column="ssname" property="sname"/>
+  		<result column="ssdepartment" property="sdepartment"/>
+  		<result column="ssdorm" property="sdorm"/>
+  		<result column="ssphone" property="phone"/>
+  		<result column="ssbank" property="bank"/>
+  	</collection>
+  </resultMap>
+  <select id="selectByStudent" resultMap="groupheader">
+  select
+  g.gid as ggid,
+  g.area as garea,
+  g.anumber as ganumber,
+  g.count as gcount,
+  w.sid as wsid,
+  w.bnumber as wbnumber,
+  s.sid as ssid,
+  s.sname as ssname,
+  s.sdepartment as ssdepartment,
+  s.sdorm as ssdorm,
+  s.phone as ssphone,
+  s.bank as ssbank
+  from groupheader g,student s,worktable w
+  WHERE g.anumber = w.anumber and w.sid = s.sid
+  </select>
+  
+  <resultMap type="Groupheader" id="groupheader1">
+  	<id column="ggid" property="gid"/>
+  	<result column="garea" property="area"/>
+  	<result column="ganumber" property="anumber"/>
+  	<result column="gcount" property="count"/>
+  		<!-- 一对一 -->
+	 	<association property="student" javaType="Student">
+	 		<result column="sname" property="sname"/>
+	 	</association>
+  </resultMap>
+  <select id="selectByStudent_One" resultMap="groupheader1">
+  	SELECT
+  	g.gid as ggid,
+	g.area as garea,
+	g.anumber as ganumber,
+	g.count as gcount,
+	s.sname as sname
+	FROM groupheader g,student s
+	WHERE
+	g.gid = s.sid
+  </select>
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from groupheader
+    where gid = #{gid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="nuc.wssp.beans.GroupheaderExample" >
+    delete from groupheader
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="nuc.wssp.beans.Groupheader" >
+    insert into groupheader (gid, area, anumber, 
+      count)
+    values (#{gid,jdbcType=BIGINT}, #{area,jdbcType=VARCHAR}, #{anumber,jdbcType=BIGINT}, 
+      #{count,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="nuc.wssp.beans.Groupheader" >
+    insert into groupheader
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="anumber != null" >
+        anumber,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        #{gid,jdbcType=BIGINT},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="anumber != null" >
+        #{anumber,jdbcType=BIGINT},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="nuc.wssp.beans.GroupheaderExample" resultType="java.lang.Integer" >
+    select count(*) from groupheader
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update groupheader
+    <set >
+      <if test="record.gid != null" >
+        gid = #{record.gid,jdbcType=BIGINT},
+      </if>
+      <if test="record.area != null" >
+        area = #{record.area,jdbcType=VARCHAR},
+      </if>
+      <if test="record.anumber != null" >
+        anumber = #{record.anumber,jdbcType=BIGINT},
+      </if>
+      <if test="record.count != null" >
+        count = #{record.count,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update groupheader
+    set gid = #{record.gid,jdbcType=BIGINT},
+      area = #{record.area,jdbcType=VARCHAR},
+      anumber = #{record.anumber,jdbcType=BIGINT},
+      count = #{record.count,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="nuc.wssp.beans.Groupheader" >
+    update groupheader
+    <set >
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="anumber != null" >
+        anumber = #{anumber,jdbcType=BIGINT},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=BIGINT},
+      </if>
+    </set>
+    where gid = #{gid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="nuc.wssp.beans.Groupheader" >
+    update groupheader
+    set area = #{area,jdbcType=VARCHAR},
+      anumber = #{anumber,jdbcType=BIGINT},
+      count = #{count,jdbcType=BIGINT}
+    where gid = #{gid,jdbcType=BIGINT}
+  </update>
+</mapper>

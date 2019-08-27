@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nuc.wssp.dao.StudentMapper" >
+  <resultMap id="BaseResultMap" type="nuc.wssp.beans.Student" >
+    <id column="sid" property="sid" jdbcType="BIGINT" />
+    <result column="sname" property="sname" jdbcType="VARCHAR" />
+    <result column="spassword" property="spassword" jdbcType="VARCHAR" />
+    <result column="sdepartment" property="sdepartment" jdbcType="VARCHAR" />
+    <result column="sdorm" property="sdorm" jdbcType="VARCHAR" />
+    <result column="dnumber" property="dnumber" jdbcType="BIGINT" />
+    <result column="bank" property="bank" jdbcType="BIGINT" />
+    <result column="phone" property="phone" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    sid, sname, spassword, sdepartment, sdorm, dnumber, bank, phone
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="nuc.wssp.beans.StudentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from student
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where sid = #{sid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from student
+    where sid = #{sid,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="nuc.wssp.beans.StudentExample" >
+    delete from student
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="nuc.wssp.beans.Student" >
+    insert into student (sid, sname, spassword, 
+      sdepartment, sdorm, dnumber, 
+      bank, phone)
+    values (#{sid,jdbcType=BIGINT}, #{sname,jdbcType=VARCHAR}, #{spassword,jdbcType=VARCHAR}, 
+      #{sdepartment,jdbcType=VARCHAR}, #{sdorm,jdbcType=VARCHAR}, #{dnumber,jdbcType=BIGINT}, 
+      #{bank,jdbcType=BIGINT}, #{phone,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="nuc.wssp.beans.Student" >
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        sid,
+      </if>
+      <if test="sname != null" >
+        sname,
+      </if>
+      <if test="spassword != null" >
+        spassword,
+      </if>
+      <if test="sdepartment != null" >
+        sdepartment,
+      </if>
+      <if test="sdorm != null" >
+        sdorm,
+      </if>
+      <if test="dnumber != null" >
+        dnumber,
+      </if>
+      <if test="bank != null" >
+        bank,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sid != null" >
+        #{sid,jdbcType=BIGINT},
+      </if>
+      <if test="sname != null" >
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="spassword != null" >
+        #{spassword,jdbcType=VARCHAR},
+      </if>
+      <if test="sdepartment != null" >
+        #{sdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="sdorm != null" >
+        #{sdorm,jdbcType=VARCHAR},
+      </if>
+      <if test="dnumber != null" >
+        #{dnumber,jdbcType=BIGINT},
+      </if>
+      <if test="bank != null" >
+        #{bank,jdbcType=BIGINT},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="nuc.wssp.beans.StudentExample" resultType="java.lang.Integer" >
+    select count(*) from student
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update student
+    <set >
+      <if test="record.sid != null" >
+        sid = #{record.sid,jdbcType=BIGINT},
+      </if>
+      <if test="record.sname != null" >
+        sname = #{record.sname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spassword != null" >
+        spassword = #{record.spassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sdepartment != null" >
+        sdepartment = #{record.sdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sdorm != null" >
+        sdorm = #{record.sdorm,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dnumber != null" >
+        dnumber = #{record.dnumber,jdbcType=BIGINT},
+      </if>
+      <if test="record.bank != null" >
+        bank = #{record.bank,jdbcType=BIGINT},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update student
+    set sid = #{record.sid,jdbcType=BIGINT},
+      sname = #{record.sname,jdbcType=VARCHAR},
+      spassword = #{record.spassword,jdbcType=VARCHAR},
+      sdepartment = #{record.sdepartment,jdbcType=VARCHAR},
+      sdorm = #{record.sdorm,jdbcType=VARCHAR},
+      dnumber = #{record.dnumber,jdbcType=BIGINT},
+      bank = #{record.bank,jdbcType=BIGINT},
+      phone = #{record.phone,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="nuc.wssp.beans.Student" >
+    update student
+    <set >
+      <if test="sname != null" >
+        sname = #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="spassword != null" >
+        spassword = #{spassword,jdbcType=VARCHAR},
+      </if>
+      <if test="sdepartment != null" >
+        sdepartment = #{sdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="sdorm != null" >
+        sdorm = #{sdorm,jdbcType=VARCHAR},
+      </if>
+      <if test="dnumber != null" >
+        dnumber = #{dnumber,jdbcType=BIGINT},
+      </if>
+      <if test="bank != null" >
+        bank = #{bank,jdbcType=BIGINT},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=BIGINT},
+      </if>
+    </set>
+    where sid = #{sid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="nuc.wssp.beans.Student" >
+    update student
+    set sname = #{sname,jdbcType=VARCHAR},
+      spassword = #{spassword,jdbcType=VARCHAR},
+      sdepartment = #{sdepartment,jdbcType=VARCHAR},
+      sdorm = #{sdorm,jdbcType=VARCHAR},
+      dnumber = #{dnumber,jdbcType=BIGINT},
+      bank = #{bank,jdbcType=BIGINT},
+      phone = #{phone,jdbcType=BIGINT}
+    where sid = #{sid,jdbcType=BIGINT}
+  </update>
+</mapper>
